@@ -1,29 +1,45 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <AppHeader />
+    <WindowList :windows="windows" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import HelloWorld from './components/HelloWorld.vue'
+import AppHeader from '@/components/AppHeader.vue'
+import WindowList from '@/components/WindowList.vue'
+import { Window } from '@/types/window'
 
 @Component({
   components: {
-    HelloWorld
+    AppHeader,
+    WindowList
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  private windows: Window[] = [{
+    id: 1,
+    name: '첫번째 창',
+    desc: '첫번째 창 설명'
+  }, {
+    id: 2,
+    name: '두번째 창',
+    desc: '두번째 창 설명'
+  }]
+}
 </script>
 
 <style lang="less">
+html, body {
+  margin: 0px;
+  padding: 0px;
+}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Mapo한아름';
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  .btn {
+    cursor: pointer;
+  }
 }
 </style>

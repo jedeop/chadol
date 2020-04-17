@@ -1,6 +1,5 @@
 'use strict'
-
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import {
   createProtocol
   /* installVueDevtools */
@@ -91,3 +90,9 @@ if (isDevelopment) {
     })
   }
 }
+
+ipcMain.on('app dir req', (event) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  event.sender.send('app dir res', __static)
+})

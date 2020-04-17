@@ -1,33 +1,20 @@
 <template>
   <div id="app">
     <AppHeader />
-    <WindowList :windows="windows" />
+    <router-view></router-view>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import AppHeader from '@/components/AppHeader.vue'
-import WindowList from '@/components/WindowList.vue'
-import { Window } from '@/types/window'
 
 @Component({
   components: {
-    AppHeader,
-    WindowList
+    AppHeader
   }
 })
-export default class App extends Vue {
-  private windows: Window[] = [{
-    id: 1,
-    name: '첫번째 창',
-    desc: '첫번째 창 설명'
-  }, {
-    id: 2,
-    name: '두번째 창',
-    desc: '두번째 창 설명'
-  }]
-}
+export default class App extends Vue {}
 </script>
 
 <style lang="less">

@@ -1,6 +1,6 @@
 <template>
   <div class="video-list">
-    <WindowListItem v-for="window in windows" :key="window.id" :window="window" />
+    <WindowListItem v-for="window in windows" :key="window.id" :window="window" :app-dir="appDir" />
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import WindowListItem from '@/components/WindowListItem.vue'
 import { Window } from '@/types/window'
+import { ipcRenderer } from 'electron'
 
 @Component({
   components: {
@@ -16,6 +17,14 @@ import { Window } from '@/types/window'
 })
 export default class WindowList extends Vue {
   @Prop() private windows!: Window[];
+  private appDir: string | null = null
+
+  created () {
+    ipcRenderer.send('app dir req')
+    ipcRenderer.on('app dir res', (event, dir) => {
+      this.appDir = dir
+    })
+  }
 }
 </script>
 

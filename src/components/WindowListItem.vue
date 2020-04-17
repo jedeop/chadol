@@ -21,25 +21,39 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { Window } from '@/types/window'
 import { remote } from 'electron'
+import path from 'path'
 const { BrowserWindow } = remote
 
 @Component
 export default class WindowListItem extends Vue {
   @Prop() private window!: Window;
+  @Prop() private appDir!: string;
   private instance: Electron.BrowserWindow | null = null;
 
   openWindow (): void {
+    if (!this.appDir) return
     if (!this.instance) {
       this.instance = new BrowserWindow({
         width: 640,
         height: 360,
         frame: false,
-        title: this.window.name
+        title: this.window.name,
+        webPreferences: {
+          preload: path.join(this.appDir, 'preload.js')
+        },
+        alwaysOnTop: true
       })
       this.instance.on('close', () => { this.instance = null })
-      this.instance.loadURL('')
+      this.instance.loadURL(this.window.url)
+      const instance = this.instance
+      this.instance.webContents.once('dom-ready', () => {
+        instance.webContents.send('ready')
+      })
     }
     this.instance.show()
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    global.instance = this.instance
   }
 }
 </script>

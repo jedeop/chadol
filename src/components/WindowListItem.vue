@@ -51,9 +51,6 @@ export default class WindowListItem extends Vue {
       })
     }
     this.instance.show()
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    global.instance = this.instance
   }
 }
 </script>

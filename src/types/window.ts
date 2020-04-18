@@ -1,6 +1,5 @@
 export interface Window {
-  id: number;
+  id: string;
   name: string;
-  desc: string;
   url: string;
 }

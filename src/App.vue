@@ -22,11 +22,30 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
-#app {
+* {
   font-family: 'Mapo한아름';
+}
+#app {
   text-align: center;
   .btn {
     cursor: pointer;
   }
+  margin-bottom: 20px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsla(0, 0%, 70%, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsla(0, 0%, 70%, 0.8);
 }
 </style>

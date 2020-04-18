@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <WindowList :windows="windows" />
+    <WindowList :windows="windows" @create-window="createWindow"  @delete-window="deleteWindow" @edit-window="editWindow" />
   </div>
 </template>
 
@@ -8,6 +8,8 @@
 import { Component, Vue } from 'vue-property-decorator'
 import WindowList from '@/components/WindowList.vue'
 import { Window } from '@/types/window'
+import Store from 'electron-store'
+const store = new Store()
 
 @Component({
   components: {
@@ -15,17 +17,33 @@ import { Window } from '@/types/window'
   }
 })
 export default class App extends Vue {
-  private windows: Window[] = [{
-    id: 1,
-    name: '매직카펫라이드 - 티키틱',
-    desc: '첫번째 창 설명',
-    url: 'https://www.youtube.com/watch?v=BN3WvuoDN1o'
-  }, {
-    id: 2,
-    name: '팔면좋겠다 - 티키틱',
-    desc: '두번째 창 설명',
-    url: 'https://www.youtube.com/watch?v=l344cbmYGmU'
-  }]
+  get windows (): Window[] {
+    return store.get('windows', [])
+  }
+
+  set windows (windowsInput: Window[]) {
+    store.set('windows', windowsInput)
+  }
+
+  generateID () {
+    return Math.random().toString(36).substr(2, 9)
+  };
+
+  createWindow (url: string): void {
+    this.windows.push({
+      id: this.generateID(),
+      name: '영상',
+      url
+    })
+  }
+
+  deleteWindow (index: number): void {
+    this.windows.splice(index, 1)
+  }
+
+  editWindow (index: number, name: string): void {
+    this.windows[index].name = name
+  }
 }
 </script>
 

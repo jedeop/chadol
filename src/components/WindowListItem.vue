@@ -1,34 +1,60 @@
 <template>
-  <div class="video-list-item">
+  <WindowListTemplate :class="{ setting: isSetting }">
     <div class="info">
-      <div class="title">{{ window.name }}</div>
+      <div class="title" v-show="!isSetting">
+        {{ window.name }}
+      </div>
+      <div class="title" v-show="isSetting">
+        <input type="text" v-model="newName">
+      </div>
       <div class="desc">
-        {{ window.desc }}
+        {{ window.url }}
       </div>
     </div>
-    <div class="setting btn">
+
+    <div class="setting btn" @click="toggleSetting" v-show="!isSetting">
       <font-awesome-icon :icon="['fas', 'wrench']" />
       설정
     </div>
-    <div class="open btn" @click="openWindow">
+    <div class="open btn" @click="openWindow" v-show="!isSetting">
       <font-awesome-icon :icon="['fas', 'external-link-alt']" />
       열기
     </div>
-  </div>
+
+    <div class="delete btn" @click="deleteWindow" v-show="isSetting">
+      <font-awesome-icon :icon="['fas', 'trash']" />
+      삭제
+    </div>
+    <div class="calcel btn" @click="toggleSetting" v-show="isSetting">
+      <font-awesome-icon :icon="['fas', 'times']" />
+      취소
+    </div>
+    <div class="save btn" @click="editWindow" v-show="isSetting">
+      <font-awesome-icon :icon="['fas', 'check']" />
+      저장
+    </div>
+  </WindowListTemplate>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import WindowListTemplate from '@/components/WindowListTemplate.vue'
 import { Window } from '@/types/window'
 import { remote } from 'electron'
 import path from 'path'
 const { BrowserWindow } = remote
 
-@Component
+@Component({
+  components: {
+    WindowListTemplate
+  }
+})
 export default class WindowListItem extends Vue {
   @Prop() private window!: Window;
   @Prop() private appDir!: string;
   private instance: Electron.BrowserWindow | null = null;
+  private isSetting = false;
+  private newName = '';
 
   openWindow (): void {
     if (!this.appDir) return
@@ -52,25 +78,47 @@ export default class WindowListItem extends Vue {
     }
     this.instance.show()
   }
+
+  toggleSetting (): void {
+    this.isSetting = !this.isSetting
+    if (this.isSetting) {
+      this.newName = this.window.name
+    } else {
+      this.newName = ''
+    }
+  }
+
+  deleteWindow () {
+    if (this.instance) {
+      this.instance.close()
+    }
+    this.$emit('delete-window')
+  }
+
+  editWindow () {
+    this.$emit('edit-window', this.newName)
+    this.toggleSetting()
+  }
 }
 </script>
 
 <style lang="less">
 .video-list-item {
-  border-radius: 10px;
-  margin: 15px;
-  box-shadow: 0px 0px 15px -5px hsl(0, 0%, 80%);
   text-align: left;
-  font-size: 18px;
   display: flex;
-  align-items: center;
-  overflow: hidden;
-  width: 50%;
-  @media (max-width: 600px) {
-    width: 75%;
-  }
+  align-items: stretch;
+
   .info {
-    padding: 15px;
+    padding-right: 5px;
+    flex-basis: 70%;
+    input {
+      margin: 0px;
+      margin-bottom: -4px;
+      padding-bottom: 2px;
+    }
+    .title input {
+      font-size: 18px;
+    }
   }
   .title {
     font-weight: 400;
@@ -79,24 +127,20 @@ export default class WindowListItem extends Vue {
   }
   .desc {
     color: gray;
-    font-size: 14px;
+    font-size: 13px;
+    word-break: break-all;
   }
   .btn {
     &.setting {
       margin-left: auto;
     }
-    >* {
-      padding: 5px 0px;
+    flex-basis: 15%;
+    &.delete {
+      color: rgb(255, 70, 37);
     }
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 15px;
-    &:hover {
-      background-color: hsl(0, 0%, 90%);
-    }
+  }
+  &.setting .btn {
+    flex-basis: 10%;
   }
 }
 </style>

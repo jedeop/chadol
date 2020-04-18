@@ -1,6 +1,8 @@
 {
   "name": "chadol_video_player",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "항상 위에 고정되어 있는 유튜브 팝업 플레이어",
+  "author": "D.QSR",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

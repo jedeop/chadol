@@ -27,7 +27,7 @@ export default class App extends Vue {
   };
 
   createWindow (url: string): void {
-    this.windows.push({
+    this.windows.unshift({
       id: this.generateID(),
       name: '영상',
       url

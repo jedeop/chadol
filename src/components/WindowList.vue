@@ -1,6 +1,5 @@
 <template>
   <div class="video-list">
-    <WindowListItem v-for="(window, index) in windows" :key="window.id" :window="window" :app-dir="appDir" @delete-window="deleteWindow(index)" @edit-window="editWindow($event, index)"/>
     <WindowListTemplate class="createWindow btn">
       <div class="btn add" v-show="!creatingWindow" @click="createWindow">
         <font-awesome-icon :icon="['fas', 'plus']" />
@@ -18,6 +17,7 @@
         </div>
       </div>
     </WindowListTemplate>
+    <WindowListItem v-for="(window, index) in windows" :key="window.id" :window="window" :app-dir="appDir" @delete-window="deleteWindow(index)" @edit-window="editWindow($event, index)"/>
   </div>
 </template>
 
@@ -95,6 +95,11 @@ export default class WindowList extends Vue {
       &.add {
         padding: 15px;
         flex-basis: 100%;
+        flex-direction: row;
+        > *:first-child {
+          margin-bottom: 0px;
+          margin-right: 5px;
+        }
       }
     }
     .url {

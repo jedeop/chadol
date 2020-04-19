@@ -58,6 +58,9 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
+html {
+  overflow-y: scroll;
+}
 * {
   font-family: 'Mapo한아름';
 }

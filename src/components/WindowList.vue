@@ -17,7 +17,9 @@
         </div>
       </div>
     </WindowListTemplate>
-    <WindowListItem v-for="(window, index) in windows" :key="window.id" :window="window" :app-dir="appDir" @delete-window="deleteWindow(index)" @edit-window="editWindow($event, index)"/>
+    <transition-group name="window-list" tag="div">
+      <WindowListItem v-for="(window, index) in windows" :key="window.id" :window="window" :app-dir="appDir" @delete-window="deleteWindow(index)" @edit-window="editWindow($event, index)"/>
+    </transition-group>
   </div>
 </template>
 
@@ -88,9 +90,16 @@ export default class WindowList extends Vue {
   align-items: center;
   flex-direction: column;
 
+  > div, .createWindow {
+    width: 50%;
+    @media (max-width: 600px) {
+      width: 75%;
+    }
+  }
   .createWindow {
     display: flex;
     justify-content: center;
+    margin: 0px;
     .btn {
       &.add {
         padding: 15px;
@@ -108,7 +117,7 @@ export default class WindowList extends Vue {
       width: 100%;
       padding: 0px;
       > * {
-        padding: 15px;
+        padding: 10px;
       }
       .btn  {
         flex-basis: 10%;
@@ -125,7 +134,28 @@ export default class WindowList extends Vue {
     outline: none;
     font-size: 15px;
     width: 100%;
-    margin: 15px;
+    margin: 10px;
+  }
+}
+.video-list-item {
+  transition: all .5s ease;
+}
+.window-list-enter, .window-list-leave-to {
+  opacity: 0;
+}
+.window-list-enter-active {
+  transition: opacity .5s ease .3s;
+}
+.window-list-leave-active {
+  transition: opacity .5s ease 0s;
+  position: absolute;
+  margin: 0px;
+  &:first-of-type {
+    margin-top: 15px;
+  }
+  width: 50%;
+  @media (max-width: 600px) {
+    width: 75%;
   }
 }
 </style>

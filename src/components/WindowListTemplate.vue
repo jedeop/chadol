@@ -14,16 +14,12 @@ export default class WindowListTemplate extends Vue {}
 <style lang="less">
 .video-list-item {
   border-radius: 10px;
-  margin: 15px;
+  margin: 15px 0px;
   box-shadow: 0px 0px 15px -5px hsl(0, 0%, 80%);
   font-size: 18px;
   overflow: hidden;
-  width: 50%;
   > *:not(.btn) {
     padding: 15px;
-  }
-  @media (max-width: 600px) {
-    width: 75%;
   }
   .btn {
     display: flex;

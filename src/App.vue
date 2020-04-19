@@ -30,7 +30,8 @@ export default class App extends Vue {
     this.windows.unshift({
       id: this.generateID(),
       name: '영상',
-      url
+      url,
+      opacity: 100
     })
   }
 
@@ -38,8 +39,9 @@ export default class App extends Vue {
     this.windows.splice(index, 1)
   }
 
-  editWindow (index: number, name: string): void {
+  editWindow (index: number, { name, opacity }: { name: string; opacity: number }): void {
     this.windows[index].name = name
+    this.windows[index].opacity = opacity
   }
 
   @Watch('windows', { deep: true })

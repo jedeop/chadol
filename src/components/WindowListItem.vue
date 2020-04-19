@@ -7,8 +7,12 @@
       <div class="title" v-show="isSetting">
         <input type="text" v-model="newName">
       </div>
-      <div class="desc">
+      <div class="desc" v-show="!isSetting">
         {{ window.url }}
+      </div>
+      <div class="opacity" v-show="isSetting">
+        <label :for="`opacity${window.id}`">투명도</label>
+        <input type="range" min="30" max="100" :id="`opacity${window.id}`" v-model="newOpacity">
       </div>
     </div>
 
@@ -55,6 +59,7 @@ export default class WindowListItem extends Vue {
   private instance: Electron.BrowserWindow | null = null;
   private isSetting = false;
   private newName = '';
+  private newOpacity = 100;
 
   openWindow (): void {
     if (!this.appDir) return
@@ -75,6 +80,7 @@ export default class WindowListItem extends Vue {
       this.instance.webContents.once('dom-ready', () => {
         instance.webContents.send('ready')
       })
+      this.instance.setOpacity(this.window.opacity / 100)
     }
     this.instance.show()
   }
@@ -83,6 +89,7 @@ export default class WindowListItem extends Vue {
     this.isSetting = !this.isSetting
     if (this.isSetting) {
       this.newName = this.window.name
+      this.newOpacity = this.window.opacity
     } else {
       this.newName = ''
     }
@@ -96,7 +103,7 @@ export default class WindowListItem extends Vue {
   }
 
   editWindow () {
-    this.$emit('edit-window', this.newName)
+    this.$emit('edit-window', { name: this.newName, opacity: this.newOpacity })
     this.toggleSetting()
   }
 }
@@ -109,7 +116,7 @@ export default class WindowListItem extends Vue {
   align-items: stretch;
 
   .info {
-    padding-right: 5px;
+    padding-right: 10px;
     flex-basis: 70%;
     input {
       margin: 0px;
@@ -129,6 +136,31 @@ export default class WindowListItem extends Vue {
     color: gray;
     font-size: 13px;
     word-break: break-all;
+  }
+  .opacity {
+    font-size: 14px;
+    display: flex;
+    align-items: stretch;
+    margin-top: 8px;
+    input {
+      width: auto;
+      margin: auto;
+      margin-left: 10px;
+      flex-grow: 1;
+      appearance: none;
+      background-color: hsl(0, 0%, 80%);
+      height: 4px;
+      &::-webkit-slider-thumb {
+        appearance: none;
+        border-radius: 50%;
+        width: 13px;
+        height: 13px;
+        background-color: hsl(0, 0%, 75%);
+        &:hover {
+          background-color: hsl(0, 0%, 60%);
+        }
+      }
+    }
   }
   .btn {
     &.setting {

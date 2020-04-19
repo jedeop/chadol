@@ -130,11 +130,13 @@ export default class WindowList extends Vue {
   }
   input {
     border: none;
-    border-bottom: 1px solid gray;
     outline: none;
     font-size: 15px;
     width: 100%;
     margin: 10px;
+    &[type=text] {
+      border-bottom: 1px solid gray;
+    }
   }
 }
 .video-list-item {

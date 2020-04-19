@@ -1,5 +1,5 @@
 'use strict'
-import { app, protocol, BrowserWindow, ipcMain } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, Menu } from 'electron'
 import {
   createProtocol
   /* installVueDevtools */
@@ -73,6 +73,7 @@ app.on('ready', async () => {
     // }
 
   }
+  Menu.setApplicationMenu(null)
   createWindow()
 })
 

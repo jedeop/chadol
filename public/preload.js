@@ -52,5 +52,6 @@ ipcRenderer.once('ready', () => {
   document.body.appendChild(exitBtn)
   document.addEventListener('keydown', (e) => {
     if (e.key === 's') document.querySelector('.ytp-ad-skip-button').click()
+    else if (e.key === 'q') window.close()
   })
 })

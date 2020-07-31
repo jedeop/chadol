@@ -7,7 +7,8 @@ module.exports = {
         win: {
           publisherName: 'D.QSR'
         }
-      }
+      },
+      nodeIntegration: true
     }
   }
 }
